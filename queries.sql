@@ -123,3 +123,48 @@ AND a.escape_attempts <= 0;
 
 SELECT o.full_name, COUNT(*) FROM owners o LEFT JOIN animals a ON o.id =  a.owner_id GROUP BY o.full_name
 ORDER BY COUNT DESC LIMIT 1;
+
+SELECT a.name 
+FROM visits v
+JOIN animals a ON v.animal_id = a.id
+JOIN vets vt ON v.vet_id = vt.id
+WHERE vt.name = 'William Tatcher'
+ORDER BY v.visit_date DESC
+LIMIT 1;
+
+
+SELECT COUNT(DISTINCT animal_id)
+FROM visits
+WHERE vet_id = (SELECT id FROM vets WHERE name = 'Stephanie Mendez');
+
+
+SELECT v.name, s.name AS specialty
+FROM vets v
+LEFT JOIN specializations sp ON v.id = sp.vet_id
+LEFT JOIN species s ON sp.species_id = s.id
+ORDER BY v.name ASC;
+
+
+SELECT a.name 
+FROM visits v
+JOIN animals a ON v.animal_id = a.id
+JOIN vets vt ON v.vet_id = vt.id
+WHERE vt.name = 'Stephanie Mendez'
+  AND v.visit_date BETWEEN '2020-04-01' AND '2020-08-30';
+
+
+SELECT a.name, COUNT(*) AS num_visits
+FROM visits v
+JOIN animals a ON v.animal_id = a.id
+GROUP BY v.animal_id, a.name
+ORDER BY num_visits DESC
+LIMIT 1;
+
+
+
+SELECT a.name, MIN(v.visit_date) AS first_visit_date
+FROM visits v
+JOIN animals a ON v.animal_id = a.id
+JOIN vets vt ON v.vet_id = vt.id
+WHERE vt.name = 'Maisy Smith'
+GROUP BY a.name;
